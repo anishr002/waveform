@@ -1,0 +1,63 @@
+Music Player Application
+Problem Statement Document
+
+>> Preview >> https://music-player-liart-three.vercel.app/
+
+Overview
+--------
+Design and implement a Music Player Application that allows users to:
+- Manage multiple playlists
+- Play, pause, and navigate through songs
+- Use different playback modes (NONE, SHUFFLE, REPEAT)
+- Like or Unlike songs
+
+1. Basic Functionality
+----------------------
+
+1.1 Song Selection and Playback
+- Users should be able to select and play any specific song from a playlist.
+- Provide the ability to:
+  - Play the currently selected song
+  - Pause the currently playing song
+  - Toggle between play and pause states
+
+1.2 Like/Unlike Songs
+- Allow users to like or unlike a song to personalize their music preferences.
+
+2. Navigation Controls
+----------------------
+
+2.1 Next and Previous Song Logic
+Implement `next()` and `previous()` functionality based on playback mode:
+
+Mode: NONE (Linear Playback)
+- Next:
+  - If current song is not the last in the playlist -> Play the next song in the same playlist.
+  - If current song is the last in the playlist:
+    - If current playlist is not the last -> Play the first song of the next playlist.
+    - If current playlist is the last -> Play the first song of the first playlist.
+- Previous:
+  - If current song is not the first in the playlist -> Play the previous song in the same playlist.
+  - If current song is the first in the playlist:
+    - If current playlist is not the first -> Play the last song of the previous playlist.
+    - If current playlist is the first -> Play the last song of the last playlist.
+
+3. Playback Modes
+-----------------
+
+3.1 Mode Management
+Supported playback modes:
+- NONE – Linear playback
+- SHUFFLE – Random song from current playlist
+- REPEAT – Repeat songs in current playlist
+
+3.2 Mode Behaviors
+- NONE Mode:
+  - Songs are played sequentially as per the navigation rules above.
+  - Automatically progresses to the next song when the current one ends.
+- SHUFFLE Mode:
+  - Randomly selects and plays a song from the current playlist.
+  - Repeats the random selection on each next song request.
+- REPEAT Mode:
+  - Plays songs sequentially in the current playlist.
+  - Loops back to the first song after reaching the last one.
