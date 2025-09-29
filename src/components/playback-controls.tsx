@@ -1,46 +1,120 @@
 'use client'
-import React, { useState } from 'react'
+import React from 'react'
 import { Pause, SkipForward, SkipBack, Shuffle, Repeat, Play } from 'lucide-react'
 
-import { songs, Song, Playlist, playlist } from '@/data/song'
-import { cn } from '@/lib/utils'
+const PlaybackControls = ({
+  isPlaying,
+  onPlayPause,
+  playbackMode,
+  setPlaybackMode,
+  onNext,
+  onPrevious
+}: {
+  isPlaying: boolean
+  onPlayPause: () => void
+  playbackMode: 'none' | 'shuffle' | 'repeat'
+  setPlaybackMode: (mode: 'none' | 'shuffle' | 'repeat') => void
+  onNext: () => void
+  onPrevious: () => void
+}) => {
+  
+  const handleShuffle = () => {
+    setPlaybackMode(playbackMode === 'shuffle' ? 'none' : 'shuffle')
+  }
 
-const PlaybackControls = () => {
-  const [mode, setMode] = useState<'repeat' | 'shuffle' | 'none'>('none')
-  const isShuffleOn = mode === 'shuffle'
-  const isRepeatOn = mode === 'repeat'
-  const isPaused = true
+  const handleRepeat = () => {
+    setPlaybackMode(playbackMode === 'repeat' ? 'none' : 'repeat')
+  }
 
-  const changeTrack = (action: 'next' | 'prev') => {}
-  const onPlayPause = () => {}
+  const ButtonContainer = ({ 
+    children, 
+    className, 
+    onClick 
+  }: { 
+    children: React.ReactNode
+    className: string
+    onClick: () => void
+  }) => (
+    <div className={`bg-black ${className}`}>
+      <button 
+        onClick={onClick}
+        className='cursor-pointer border-none outline-none bg-none w-full h-full flex justify-center items-center hover:bg-popover-foreground/20 text-accent'
+      >
+        {children}
+      </button>
+    </div>
+  )
 
   return (
     <>
-      <ButtonContainer onClick={() => setMode(mode === 'none' ? 'shuffle' : 'none')} className={cn('col-start-4 row-start-6 bg-black', isShuffleOn && '!bg-accent')}>
-        <Shuffle className={cn('justify-self-center self-center', isShuffleOn && 'stroke-black')} size={30} strokeWidth={2} absoluteStrokeWidth />
+      <ButtonContainer 
+        onClick={handleShuffle}
+        className={`col-start-4 row-start-6 ${playbackMode === 'shuffle' ? '!bg-accent' : ''}`}
+      >
+        <Shuffle 
+          className={`justify-self-center self-center ${playbackMode === 'shuffle' ? 'stroke-black' : ''}`} 
+          size={30} 
+          strokeWidth={2} 
+        />
       </ButtonContainer>
-      <ButtonContainer onClick={() => setMode(mode === 'none' ? 'repeat' : 'none')} className={cn('col-start-4 row-start-7 bg-black', isRepeatOn && '!bg-accent')}>
-        <Repeat className={cn('justify-self-center self-center', isRepeatOn && 'stroke-black')} size={30} strokeWidth={2} absoluteStrokeWidth />
+      
+      <ButtonContainer 
+        onClick={handleRepeat}
+        className={`col-start-4 row-start-7 ${playbackMode === 'repeat' ? '!bg-accent' : ''}`}
+      >
+        <Repeat 
+          className={`justify-self-center self-center ${playbackMode === 'repeat' ? 'stroke-black' : ''}`} 
+          size={30} 
+          strokeWidth={2} 
+        />
       </ButtonContainer>
-      <ButtonContainer onClick={() => changeTrack('next')} className='col-start-6 row-start-6'>
-        <SkipForward fill='currentColor' className='justify-self-center self-center' size={30} strokeWidth={1} absoluteStrokeWidth />
+      
+      <ButtonContainer 
+        onClick={onNext}
+        className='col-start-6 row-start-6'
+      >
+        <SkipForward 
+          fill='currentColor' 
+          className='justify-self-center self-center' 
+          size={30} 
+          strokeWidth={1} 
+        />
       </ButtonContainer>
-      <ButtonContainer onClick={() => changeTrack('prev')} className='col-start-6 row-start-7'>
-        <SkipBack fill='currentColor' className='justify-self-center self-center' size={30} strokeWidth={1} absoluteStrokeWidth />
+      
+      <ButtonContainer 
+        onClick={onPrevious}
+        className='col-start-6 row-start-7'
+      >
+        <SkipBack 
+          fill='currentColor' 
+          className='justify-self-center self-center' 
+          size={30} 
+          strokeWidth={1} 
+        />
       </ButtonContainer>
-      <ButtonContainer onClick={onPlayPause} className='row-span-2 col-start-5 row-start-6'>
-        {!isPaused ? <Pause fill='currentColor' className='justify-self-center self-center' size={50} strokeWidth={1} absoluteStrokeWidth /> : <Play fill='currentColor' className='justify-self-center self-center' size={50} strokeWidth={1} absoluteStrokeWidth />}
+      
+      <ButtonContainer 
+        onClick={onPlayPause}
+        className='row-span-2 col-start-5 row-start-6'
+      >
+        {isPlaying ? (
+          <Pause 
+            fill='currentColor' 
+            className='justify-self-center self-center' 
+            size={50} 
+            strokeWidth={1} 
+          />
+        ) : (
+          <Play 
+            fill='currentColor' 
+            className='justify-self-center self-center' 
+            size={50} 
+            strokeWidth={1} 
+          />
+        )}
       </ButtonContainer>
     </>
   )
 }
-
-const ButtonContainer = ({ children, className, onClick }: { children: React.ReactNode; className: string; onClick: () => void }) => (
-  <div className={`bg-black ${className}`}>
-    <button onClick={onClick} className='cursor-pointer border-none outline-none bg-none w-full h-full flex justify-center items-center hover:bg-popover-foreground/20 text-accent'>
-      {children}
-    </button>
-  </div>
-)
 
 export default PlaybackControls
